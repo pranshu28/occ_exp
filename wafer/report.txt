@@ -1,0 +1,95 @@
+Number of wafers = 1194
+Normal = 89.3%
+Abnormal = 10.7%
+
+Number of sensors = 6
+
+Timesteps (normal) = 114-152 (136 +/- 6)
+Timesteps (abnormal) = 104-198 (144 +/- 8)
+
+Preprocessing: 
+	One hot coding
+	Resampling timesteps to 140 (avg)
+
+Train : Validation : Test = 8:1:1
+
+Epochs = 40
+Output = softmax -> adam - binary_crossentropy
+
+Models:
+
+	Input --> Time(Conv1d(8_3)) --> LSTM(32,32) --> Dense --> Output
+
+	Confusion Matrix:
+	 [[ 11   1]
+	 [  0 108]]
+
+	Classification Report:
+			precision    recall  f1-score   support
+
+		   0	1.00      0.92      0.96	 12
+		   1	0.99      1.00      1.00	108
+
+	avg / total	0.99      0.99      0.99	120
+
+	Cross Validation: 98.32% (+/- 0.92%)
+
+
+
+	Input --> Conv1d(8_3,16_3,16_3) --> Dense --> Output
+
+	Confusion Matrix:
+	 [[ 11   1]
+	 [  0 108]]
+
+	Classification Report:
+			precision    recall  f1-score   support
+
+		   0	1.00      0.92      0.96	 12
+		   1	0.99      1.00      1.00	108
+
+	avg / total	0.99      0.99      0.99	120
+
+	Cross Validation: 99.41% (+/- 0.66%)
+
+
+
+	Input --> LSTM(16,16,16) --> Dense --> Output
+
+	Confusion Matrix:
+	 [[  2  10]
+	 [  0 108]]
+
+	Classification Report:
+			precision    recall  f1-score   support
+
+		   0	1.00      0.17      0.29	 12
+		   1	0.92      1.00      0.96	108
+
+	avg / total	0.92      0.92      0.89	120
+
+	Cross Validation: 90.21% (+/- 1.36%)
+
+
+
+	Input --> LSTM(8,8)*6 --> Dense(6x,3x,x) --> Output
+
+	Confusion Matrix:
+	 [[  6   6]
+	 [  1 107]]
+
+	Classification Report:
+			precision    recall  f1-score   support
+
+		   0	0.86      0.50      0.63	 12
+		   1	0.95      0.99      0.97	108
+
+	avg / total	0.94      0.94      0.93	120
+
+	Cross Validation: 91.79% (+/- 1.50%)
+
+
+Occlusion Experiment on Conv1d model
+
+	Major abnormality detection in Sensors: 11, 8, 12
+	Major noramlity detention in Sensors: 8
